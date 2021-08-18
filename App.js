@@ -1,39 +1,91 @@
-import React, {useEffect} from 'react';
-import {Provider} from 'react-redux';
-import {Store} from './src/module/store'
-import {PersistGate} from 'redux-persist/integration/react';
-import {persistStore} from 'redux-persist';
-import RouterComponent from './src/router';
-import {StatusBar, View} from 'react-native';
-import {enableScreens} from 'react-native-screens';
-import SplashScreenComponent from './src/screens/SplashScreen';
-enableScreens();
-const persistor = persistStore(Store);
+import React from 'react';
+import { StyleSheet, SafeAreaView } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
+import NetInfo from "@react-native-community/netinfo";
+import { Provider } from 'react-redux';
+import AuthStackComponent from './src/router/AuthRoutes';
+import store from './src/module/store';
+import { getData, setData } from './src/utils/storage';
 
-const App = () => {
-  useEffect(() => {
-    return () => {
-      persistor.flush();
-    };
-  }, []);
+import OfflineNotice from './src/containers/OfflineNotice';
+import OfflineScreen from './src/containers/OfflineScreen';
+import Spinner from './src/containers/Spinner';
+import StatusBar from './src/containers/StatusBar';
 
-  return (
-    <View style={{flex:1}}>
-        <Provider store={Store}>
-          <PersistGate
-            persistor={persistor}
-            children={bootstrapped =>
-              {
-                console.log(bootstrapped)
-              if (bootstrapped) {
-                return <RouterComponent />;
-              } else {
-                return <SplashScreenComponent />;
-              }
-            }}
-          />
-        </Provider>
-    </View>
-  );
-};
-export default App;
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import IconMaterialCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconMaterial from 'react-native-vector-icons/MaterialIcons'
+import IconIonicons from 'react-native-vector-icons/Ionicons'
+import AntIcon from "react-native-vector-icons/AntDesign"
+
+import Router from './src/router';
+
+IconFontAwesome.loadFont()
+IconMaterialCommunity.loadFont()
+IconMaterial.loadFont()
+IconIonicons.loadFont()
+AntIcon.loadFont()
+
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isConnected: true,
+      loading: true,
+      isuser:false
+    }
+    this.setTempUser();
+  }
+
+  async UNSAFE_componentWillMount() {
+    await NetInfo.fetch().then(state => 
+      {
+      console.log(state)
+      this.setState({ isConnected: state.isConnected, loading: false })
+    });
+    SplashScreen.hide();
+  }
+
+  setTempUser = async () => {
+
+    const token = JSON.parse(await getData('tempUserId'))
+   if(token){
+     this.setState({isuser:true})
+   }
+    
+  }
+
+  onConnectionChanged = (isConnected) => {
+    this.setState({ isConnected });
+  }
+
+  renderApp = () => {
+    const { isConnected, loading,isuser } = this.state
+    if (loading) return <Spinner />
+    else if (!isConnected) return <OfflineScreen />
+    else return <Router />
+  }
+componentDidUpdate(){
+  console.log('hello')
+}
+  render() {
+    console.log('hello')
+    return (
+      <Provider store={store}>
+
+        <SafeAreaView style={styles.container} forceInset={{ top: 'never' }}>
+          <StatusBar />
+          <OfflineNotice onConnectionChanged={(isConnected) => this.onConnectionChanged(isConnected)} />
+          {this.renderApp()}
+        </SafeAreaView>
+
+      </Provider>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});

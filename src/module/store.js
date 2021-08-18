@@ -1,21 +1,14 @@
-import {applyMiddleware, combineReducers, createStore, compose} from 'redux';
-import * as reducers from './reducers';
-import thunk from 'redux-thunk';
-import AsyncStorage from '@react-native-community/async-storage';
-import {persistReducer} from 'redux-persist';
-import createSagaMiddleware from 'redux-saga';
+import { createStore, applyMiddleware, compose } from 'redux';
+import ReduxThunk from 'redux-thunk';
+import rootReducer from './reducers';
 
-const rootReducer = combineReducers(reducers);
-const sagaMiddleware = createSagaMiddleware();
-const composeEnhancers = compose;
+const middlewares = [ReduxThunk];
 
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-};
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-export const Store = createStore(
-  persistedReducer,
-  composeEnhancers(applyMiddleware(sagaMiddleware), applyMiddleware(thunk)),
+const store = createStore(
+     rootReducer,
+    {},// default state of the application
+    compose(applyMiddleware(...middlewares)),
 );
 
+
+export default store;
