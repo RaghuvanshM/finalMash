@@ -12,6 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { color } from 'react-native-reanimated';
 import Order from '../screens/Order';
 import OrderDetail from '../screens/OrderDetails';
+import MyCart from '../screens/MyCart';
 
 const Stack = createStackNavigator();
 const StackNavigationScreens = () => {
@@ -33,23 +34,8 @@ const TabNavigation = () => {
                 inactiveTintColor: colors.gray,
 
             }}>
-                   <Tab.Screen
-                name="profile"
-                component={Profile}
-                options={{
-                    tabBarLabel: 'Account',
-                    tabBarIcon: ({ focused }) => (
-                        <View>
-                            <FontAwesome
-                                name={'user'}
-                                size={22}
-                                color={focused ? colors.lime : colors.gray}
-                            />
-                        </View>
-                    ),
-                }}
-            />
-                   <Tab.Screen
+
+            <Tab.Screen
                 name="Home"
                 component={HomeControlScreen}
                 options={{
@@ -65,7 +51,7 @@ const TabNavigation = () => {
                     ),
                 }}
             />
-                  <Tab.Screen
+            <Tab.Screen
                 name="MyOrders"
                 component={Order}
                 options={{
@@ -81,13 +67,13 @@ const TabNavigation = () => {
                     ),
                 }}
             />
-         
+
 
 
 
             <Tab.Screen
                 name="mycart"
-                component={HomeControlScreen}
+                component={MyCart}
                 options={{
                     tabBarLabel: 'My Cart',
                     tabBarIcon: ({ focused, tintColor }) => (
@@ -102,7 +88,22 @@ const TabNavigation = () => {
                 }}
             />
 
-         
+            <Tab.Screen
+                name="profile"
+                component={Profile}
+                options={{
+                    tabBarLabel: 'Account',
+                    tabBarIcon: ({ focused }) => (
+                        <View>
+                            <FontAwesome
+                                name={'user'}
+                                size={22}
+                                color={focused ? colors.lime : colors.gray}
+                            />
+                        </View>
+                    ),
+                }}
+            />
 
 
         </Tab.Navigator>

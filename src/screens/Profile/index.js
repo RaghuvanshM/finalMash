@@ -88,7 +88,7 @@ class Profile extends Component {
             />
              <Button
               title={'save'}
-              onPress={() => this.submit()}
+
               style={styles.saveBtnStyle}
               
             />

@@ -111,7 +111,7 @@ class Home extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <TopNavBar />
+                <TopNavBar from={'home'}/>
                 <ScrollView
                     refreshControl={
                         <RefreshControl

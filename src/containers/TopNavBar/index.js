@@ -10,19 +10,11 @@ const TopNavBar = React.memo(({ from, title, onBackPress, navigation }) => {
   if (from && from === 'home') {
     return (
       <View style={styles.headerWrapper}>
-        <FastImage source={images.logo}
-          resizeMode={FastImage.resizeMode.contain}
+        <Image source={images.logo}
+          resizeMode={'contain'}
           style={styles.logo}
         />
-        <View style={styles.iconContainer}>
-          <TouchableOpacity
-            style={styles.iconWrapper}
-            activeOpacity={0.4}
-            onPress={() => navigation.navigate('Search')}
-          >
-            <Icon name={'search'} size={20} color={colors.black} />
-          </TouchableOpacity>
-        </View>
+       
 
       </View>
     )

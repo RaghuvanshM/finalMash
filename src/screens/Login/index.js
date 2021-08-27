@@ -51,7 +51,7 @@ class Login extends React.Component {
      
         <KeyboardAwareScrollView
   				contentContainerStyle={styles.keyboardAvoidingContainer}
-  				bounces={false}RCTextInput
+  				bounces={false}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps={'always'}
           enableOnAndroid={true}
