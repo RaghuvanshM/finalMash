@@ -51,7 +51,7 @@ class Home extends React.Component {
             <TouchableOpacity
                 key={index}
                 activeOpacity={1}
-            // onPress={() => this.props.navigation.navigate('SearchProducts', {from: 'category', search: item.name, categoryId: item._id})}
+            onPress={() => this.props.navigation.navigate('SearchProduct')}
             >
                 <View style={styles.categoryWrapper}>
                     <View style={styles.categoryImageWrapper}>
@@ -130,9 +130,9 @@ class Home extends React.Component {
                         <Image source={images.titleImageRight} />
 
                     </View>
-                    <Products />
-                    <Products />
-                    <Products />
+                    <Products  {...this.props}/>
+                    <Products  {...this.props}/>
+                    <Products  {...this.props}/>
 
                 </ScrollView>
             </View>

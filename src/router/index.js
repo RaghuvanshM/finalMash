@@ -12,7 +12,7 @@ class Router extends Component {
   renderApp = () => {
     console.log(this.props.AuthStatus)
     let { token } = this.props.AuthStatus
-    return token ? <NoAuthRoute /> : <AuthRoute />
+    return token ?<AuthRoute />: <NoAuthRoute /> 
   }
   render() {
     console.log('hello')

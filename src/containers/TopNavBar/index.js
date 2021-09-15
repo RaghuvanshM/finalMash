@@ -37,7 +37,7 @@ const TopNavBar = React.memo(({ from, title, onBackPress, navigation }) => {
           <TouchableOpacity
             style={styles.iconWrapper}
             activeOpacity={0.4}
-            onPress={() => navigation.state.params && navigation.state.params.from === 'search' ? navigation.goBack() : navigation.navigate('Search')}
+            onPress={() =>  navigation.navigate('Search')}
           >
             <Icon name={'search'} size={20} color={colors.black} />
           </TouchableOpacity>

@@ -38,7 +38,7 @@ class Login extends React.Component {
 	}
 
   submit=()=>{  
-   this.props.setUser(true)
+   this.props.setUser(false)
    setData('tempUserId', 'true')
   }
   render() {

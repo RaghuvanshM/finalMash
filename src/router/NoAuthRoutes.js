@@ -13,13 +13,21 @@ import { color } from 'react-native-reanimated';
 import Order from '../screens/Order';
 import OrderDetail from '../screens/OrderDetails';
 import MyCart from '../screens/MyCart';
-
+import Checkout from '../screens/Checkout';
+import SearchProducts from '../screens/SearchProducts';
+import Search from '../screens/Search/Search';
+import ProductDetail from '../screens/ProudectDetail';
 const Stack = createStackNavigator();
 const StackNavigationScreens = () => {
     return (
         <Stack.Navigator screenOptions={{ header: () => null }}>
             <Stack.Screen name="HomeControl" component={TabNavigation} />
             <Stack.Screen name="OrderDetail" component={OrderDetail} />
+            <Stack.Screen name="CheckOut" component ={Checkout} />
+            <Stack.Screen name="SearchProduct" component={SearchProducts}  />
+            <Stack.Screen name="Search" component={Search}  />
+
+            <Stack.Screen name="productdetail" component={ProductDetail}  />
         </Stack.Navigator>
     );
 };

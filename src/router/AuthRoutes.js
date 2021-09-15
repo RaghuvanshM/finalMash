@@ -12,8 +12,7 @@ function authStack() {
             >
                 <Stack.Screen name="loginscreen" component={Login} />
                 <Stack.Screen name="signupScreen" component={Signup} />
-                {/* <Stack.Screen name="studentSignupScreen" component={StudentSignup} options={{headerShown:false}} />
-            <Stack.Screen name="linkAccountScreen" component={LinkAccount} options={{headerShown:false}} />
+          {/* <Stack.Screen name="linkAccountScreen" component={LinkAccount} options={{headerShown:false}} />
             <Stack.Screen name="parentSignupScreen" component={ParentSignup} options={{headerShown:false}} />
             <Stack.Screen name="loginScreen" component={Login} options={{headerShown:false}} />
             <Stack.Screen name="studentLoginScreen" component={StudentLogin} options={{headerShown:false}} />            

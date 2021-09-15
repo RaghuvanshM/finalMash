@@ -1,27 +1,79 @@
 import React from 'react';
 import { Component } from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Modal, SafeAreaView, ActivityIndicator, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { images } from '../../assets';
 import { colors } from '../../constants/colors';
 import { windowWidth } from '../../utils/deviceInfo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import FastImage from 'react-native-fast-image';
 
+const imageurl = [{
+  // Simplest usage.
+  url: 'https://avatars2.githubusercontent.com/u/7970947?v=3&s=460',
+
+
+}]
 class Products extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      disabled: false,
+      isVisible: false,
+      productImages: []
+    }
 
+  }
+  openProductImageSlider = () => {
+    this.setState({ isVisible: true })
+  }
+  onClose = () => {
+    this.setState({ containerisVisible: false, productImages: [], isVisible: false })
+  }
+  renderProductImageSlider = () => {
+    return (
+      <Modal
+        style={styles.modal}
+        isVisible={this.state.isVisible}
+        onBackButtonPress={this.onClose}
+        onSwipeComplete={this.onClose}
+        backdropOpacity={1}
+      >
+        <SafeAreaView style={styles.safeArea}>
+          <TouchableOpacity
+            style={styles.closeContainer}
+            activeOpacity={0.8}
+            onPress={() => this.onClose()}
+          >
+            <MaterialCommunityIcon name={'close'} size={30} color={'black'} />
+
+          </TouchableOpacity>
+          <ImageViewer
+            imageUrls={imageurl}
+            enableImageZoom={false}
+            saveToLocalByLongPress={false}
+
+            enableSwipeDown={false}
+            loadingRender={() => <ActivityIndicator color={colors.white} size={'large'} style={styles.indicator} />}
+            renderImage={props => <FastImage {...props} />}
+          />
+        </SafeAreaView>
+      </Modal>
+    )
   }
   renderProducts = () => {
     return (
       <View style={[styles.productWrapper]}>
-        <View style={styles.imageWrapper}>
+        <TouchableOpacity style={styles.imageWrapper}
+          onPress={() => { this.props.navigation.navigate('productdetail') }}
+        >
           <Image
             source={images.dummy}
             resizeMode='contain'
             style={styles.productImage}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.rightWrapper}>
           <Text style={[styles.nameText]} numberOfLines={1} ellipsizeMode={'tail'}>{'ItemTitle'}</Text>
           <Text style={styles.descriptionText} numberOfLines={2} ellipsizeMode={'tail'}>{'In publishing and graphic design, Lorem ipsum is a'}</Text>
@@ -39,22 +91,24 @@ class Products extends Component {
                 <Icon name={'minus'} size={18} color={colors.red} />
               </TouchableOpacity>
               <View style={styles.quantityView}>
-                  <Text style={styles.quantityText}>{'3'}</Text>
-                </View>
-                <TouchableOpacity
-                  style={styles.plusQuantityView}
-                  activeOpacity={0.6}
-                  // onPress={() => this.manageQuantity(item, quantity + 1, 'plus')}
-                 
-                >
-                  <Icon name={'plus'} size={18} color={colors.white} />
-                </TouchableOpacity>
+                <Text style={styles.quantityText}>{'3'}</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.plusQuantityView}
+                activeOpacity={0.6}
+              // onPress={() => this.manageQuantity(item, quantity + 1, 'plus')}
+
+              >
+                <Icon name={'plus'} size={18} color={colors.white} />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
-        <TouchableOpacity activeOpacity={0.6} style={styles.quickViewStyle} >
-            <MaterialCommunityIcon name={'arrow-expand-all'} size={12} color={colors.red} />
-          </TouchableOpacity>
+        <TouchableOpacity activeOpacithity={0.6} style={styles.quickViewStyle}
+          onPress={() => { this.openProductImageSlider() }}
+        >
+          <MaterialCommunityIcon name={'arrow-expand-all'} size={12} color={colors.red} />
+        </TouchableOpacity>
       </View>
     )
   }
@@ -62,6 +116,7 @@ class Products extends Component {
     return (
       <View style={{ flex: 1 }}>
         {this.renderProducts()}
+        {this.state.isVisible && this.renderProductImageSlider()}
       </View>
 
     )
@@ -161,5 +216,24 @@ const styles = StyleSheet.create({
     borderColor: colors.red,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  modal: {
+    margin: 0
+  },
+  safeArea: {
+    flex: 1,
+
+  },
+  closeContainer: {
+    height: 50,
+    width: 50,
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+  indicator: {
+    flex: 1
   },
 })

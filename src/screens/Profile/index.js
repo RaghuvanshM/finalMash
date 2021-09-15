@@ -16,10 +16,10 @@ class Profile extends Component {
     constructor(props) {
         super(props)
     }
-    logoutPress=()=>{
+    logoutPress = () => {
         alert('hello')
-        this.props.setUser(false)
-      deleteData('tempUserId')
+        this.props.setUser(true)
+        deleteData('tempUserId')
     }
     render() {
         return (
@@ -47,51 +47,51 @@ class Profile extends Component {
                         <View style={styles.rightWrapper}>
                             <Text style={styles.nameText} numberOfLines={1} ellipsizeMode={'tail'}>{'username'}</Text>
                             <TouchableOpacity
-                            onPress={()=>{this.logoutPress()}}
+                                onPress={() => { this.logoutPress() }}
                             >
-                            <Text style={styles.nameText} numberOfLines={1} ellipsizeMode={'tail'}>{'LogOut'}</Text>
+                                <Text style={styles.nameText} numberOfLines={1} ellipsizeMode={'tail'}>{'Login'}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
                     <RCTextInput
-            //  inputRef={(e) => { this.nameInput = e; }}
-              placeholder={'Name'}
-            //  value={name}
-              returnKeyType='next'
-              iconRight='user-o'
-              onChangeText={name => this.setState({ name })}
-              onSubmitEditing={() => { this.addressInput.focus(); }}
-            />
-             <RCTextInput
-            // inputRef={(e) => { this.addressInput = e; }}
-              placeholder={'Street Address'}
-             // value={address}
-              returnKeyType='next'
-              iconRight='location-on'
-              //onChangeText={address => this.setState({ address })}
-            //  onSubmitEditing={() => { this.areaInput.focus(); }}
-            />
-            <RCTextInput
-            //  inputRef={(e) => { this.areaInput = e; }}
-              placeholder={'Area'}
-           //   value={area}
-              returnKeyType='next'
-              //onChangeText={area => this.setState({ area })}
-            //  onSubmitEditing={() => { this.cityInput.focus(); }}
-            />
-            <RCTextInput
-            //  inputRef={(e) => { this.cityInput = e; }}
-              placeholder={'City'}
-           //   value={city}
-              returnKeyType='next'
-             // onChangeText={city => this.setState({ city })}
-            />
-             <Button
-              title={'save'}
+                        //  inputRef={(e) => { this.nameInput = e; }}
+                        placeholder={'Name'}
+                        //  value={name}
+                        returnKeyType='next'
+                        iconRight='user-o'
+                        onChangeText={name => this.setState({ name })}
+                        onSubmitEditing={() => { this.addressInput.focus(); }}
+                    />
+                    <RCTextInput
+                        // inputRef={(e) => { this.addressInput = e; }}
+                        placeholder={'Street Address'}
+                        // value={address}
+                        returnKeyType='next'
+                        iconRight='location-on'
+                    //onChangeText={address => this.setState({ address })}
+                    //  onSubmitEditing={() => { this.areaInput.focus(); }}
+                    />
+                    <RCTextInput
+                        //  inputRef={(e) => { this.areaInput = e; }}
+                        placeholder={'Area'}
+                        //   value={area}
+                        returnKeyType='next'
+                    //onChangeText={area => this.setState({ area })}
+                    //  onSubmitEditing={() => { this.cityInput.focus(); }}
+                    />
+                    <RCTextInput
+                        //  inputRef={(e) => { this.cityInput = e; }}
+                        placeholder={'City'}
+                        //   value={city}
+                        returnKeyType='next'
+                    // onChangeText={city => this.setState({ city })}
+                    />
+                    <Button
+                        title={'save'}
 
-              style={styles.saveBtnStyle}
-              
-            />
+                        style={styles.saveBtnStyle}
+
+                    />
                 </KeyboardAwareScrollView>
             </View>
         )
@@ -100,9 +100,9 @@ class Profile extends Component {
 const mapDispatchToProps = dispatch => ({
     loginSuccess: (data) => dispatch(loginSuccess(data)),
     getCart: () => dispatch(getCart()),
-    setUser:(data)=>dispatch(setToken(data))
-  });
-  export default connect(null, mapDispatchToProps)(Profile);
+    setUser: (data) => dispatch(setToken(data))
+});
+export default connect(null, mapDispatchToProps)(Profile);
 
 
 const styles = StyleSheet.create({
@@ -136,8 +136,8 @@ const styles = StyleSheet.create({
     rightWrapper: {
         marginLeft: 20,
         width: windowWidth - 130,
-        flexDirection:'row',
-        justifyContent:'space-between'
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     nameText: {
         fontSize: 16,
@@ -145,9 +145,9 @@ const styles = StyleSheet.create({
         color: colors.white
     },
     saveBtnStyle: {
-		width: '100%',
-		backgroundColor: colors.darkGray,
-		borderRadius: 0,
-		marginBottom: 20
-	}
+        width: '100%',
+        backgroundColor: colors.darkGray,
+        borderRadius: 0,
+        marginBottom: 20
+    }
 })

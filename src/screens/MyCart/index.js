@@ -51,6 +51,7 @@ class MyCart extends Component {
                     <Button
                         title={'checkout'}
                         style={styles.buttonStyle}
+                        onPress={()=>{this.props.navigation.navigate('CheckOut')}}
                       
                       
                     />
