@@ -1,29 +1,28 @@
-import { setData } from '../utils/storage';
+import {setData} from '../utils/storage';
 
 export const loginRequest = bool => ({
   type: 'LOGIN_REQUEST',
-  isFetching: bool
+  isFetching: bool,
 });
 
-export const loginSuccess = (user) => {
+export const loginSuccess = user => {
   return {
     type: 'LOGIN_SUCCESS',
-    user
-  }
+    user,
+  };
 };
 
-export const loginError = (error) => ({
+export const loginError = error => ({
   type: 'LOGIN_ERROR',
-  error
+  error,
 });
 
-export const setToken = (token) => {
-  console.log(token,'loginaction')
+export const setToken = token => {
   return {
     type: 'SET_TOKEN',
-    token
-  }
-}
+    token,
+  };
+};
 
 // export const login = (credentials) => dispatch => {
 //   dispatch(loginRequest(true));

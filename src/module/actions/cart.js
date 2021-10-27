@@ -1,5 +1,5 @@
 import apolloClient from '../graphql/client';
-import { CART_LIST } from '../graphql/queries';
+import {CART_LIST} from '../graphql/queries';
 
 export const cartLoading = bool => ({
   type: 'CART_LOADING',
@@ -11,33 +11,35 @@ export const cartError = error => ({
   error,
 });
 
-export const getCartDetails = (data) => ({
+export const getCartDetails = data => ({
   type: 'GET_CART',
-  data
+  data,
 });
 
-export const updateCart = (product) => ({
+export const updateCart = product => ({
   type: 'UPDATE_CART',
-  product
-})
+  product,
+});
 
-export const getCart = (userId) => dispatch => {
+export const getCart = userId => dispatch => {
   dispatch(cartLoading(true));
-  const data = {}
-  if(userId) data['userId'] = userId
-  return apolloClient.query({
+  const data = {};
+  if (userId) data['userId'] = userId;
+  return apolloClient
+    .query({
       query: CART_LIST,
       variables: {
-        ...data
+        ...data,
       },
-      fetchPolicy: 'no-cache'
+      fetchPolicy: 'no-cache',
     })
-    .then((result) => {
-      if(result && result.data && result.data.getCartDetails) dispatch(getCartDetails(result.data.getCartDetails));
+    .then(result => {
+      if (result && result.data && result.data.getCartDetails)
+        dispatch(getCartDetails(result.data.getCartDetails));
       dispatch(cartLoading(false));
     })
-    .catch((err) => {
+    .catch(err => {
       dispatch(cartLoading(false));
       dispatch(cartError(err.message || 'ERROR'));
-    })
-}
+    });
+};

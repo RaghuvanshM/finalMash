@@ -1,42 +1,45 @@
-import apolloClient from '../graphql/client';
-import { ORDER_LIST } from '../graphql/queries';
-
+import axios from 'axios';
+import {baseUrl} from '../apiconstat';
 export const orderLoading = bool => ({
   type: 'ORDER_LOADING',
-  isLoading: bool
+  isLoading: bool,
 });
 
 export const orderError = error => ({
   type: 'ORDER_ERROR',
-  error
+  error,
 });
 
-export const getOrderDetails = (data) => ({
+export const getOrderDetails = data => ({
   type: 'GET_ORDER',
-  data
+  data,
 });
 
 export const clearOrders = () => {
-	return {
-		type: 'CLEAR_ORDERS'
-	};
+  return {
+    type: 'CLEAR_ORDERS',
+  };
 };
 
-export const getOrders = (args) => dispatch => {
+export const getOrders = args => dispatch => {
   dispatch(orderLoading(true));
-  return apolloClient.query({
-      query: ORDER_LIST,
-      variables: {
-        ...args
-      },
-      fetchPolicy: 'no-cache'
+
+  return axios({
+    method: 'get',
+    url: `${baseUrl}get-order`,
+  })
+    .then(result => {
+      if (result && result.data && result.data.status) {
+        console.log(result.data.data);
+        dispatch(getOrderDetails(result.data.data));
+      }
+      {
+        dispatch(orderLoading(false));
+      }
     })
-    .then((result) => {
-      if(result && result.data && result.data.getOrders) dispatch(getOrderDetails(result.data.getOrders));
-      dispatch(orderLoading(false));
-    })
-    .catch((err) => {
+    .catch(err => {
+      console.log(err);
       dispatch(orderLoading(false));
       dispatch(orderError(err.message || 'ERROR'));
-    })
-}
+    });
+};

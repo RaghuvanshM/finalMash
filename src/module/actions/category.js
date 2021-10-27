@@ -1,5 +1,4 @@
-import apolloClient from '../graphql/client';
-import { CATEGORY_LIST } from '../graphql/queries';
+import axios from 'axios';
 
 export const categoryLoading = bool => ({
   type: 'CATEGORY_LOADING',
@@ -11,33 +10,25 @@ export const categoryError = error => ({
   error,
 });
 
-export const getCategory = (categories) => ({
+export const getCategory = categories => ({
   type: 'GET_CATEGORIES',
-  categories
+  categories,
 });
 
 export const getCategories = () => dispatch => {
-  return apolloClient.query({
-      query: CATEGORY_LIST,
-      fetchPolicy: 'no-cache'
+  return axios({
+    method: 'GET',
+    url: 'http://siyakart.in/api/top-category',
+  })
+    .then(result => {
+      if (result && result.data && result.status) {
+        dispatch(getCategory(result.data.data));
+      } else {
+        dispatch(categoryLoading(false));
+      }
     })
-    .then((result) => {
-      if(result && result.data && result.data.getCategories) dispatch(getCategory(result.data.getCategories));
-      dispatch(categoryLoading(false));
-    })
-    .catch((err) => {
+    .catch(err => {
       dispatch(categoryLoading(false));
       dispatch(categoryError(err.message || 'ERROR'));
-    })
-  /*try {
-    const result = await apolloClient.query({
-      query: CATEGORY_LIST,
-      fetchPolicy: 'no-cache'
-    })
-    dispatch(categoryLoading(false));
-    if(result && result.data && result.data.getCategories) dispatch(getCategory(result.data.getCategories));
-  } catch (error) {
-    dispatch(categoryLoading(false));
-    dispatch(categoryError(err.message || 'ERROR'));
-  }*/
-}
+    });
+};

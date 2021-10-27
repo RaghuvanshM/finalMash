@@ -11,5 +11,5 @@ export const colors = {
   rubyRed: '#f61b2c',
   green: '#2E8B57',
   yellow: '#ffcc00',
-  lightBlack: 'rgba(0, 0, 0, 0.1)'
-}
+  lightBlack: 'rgba(0, 0, 0, 0.1)',
+};

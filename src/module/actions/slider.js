@@ -1,26 +1,28 @@
-import apolloClient from '../graphql/client';
-import { SLIDER_PHOTOS } from '../graphql/queries';
+import axios from 'axios';
 
 export const sliderLoading = bool => ({
   type: 'SLIDER_LOADING',
   isLoading: bool,
 });
 
-export const getSliderPhoto = (photos) => ({
+export const getSliderPhoto = photos => ({
   type: 'GET_SLIDERS_PHOTOS',
-  photos
+  photos,
 });
 
 export const getSliderPhotos = () => dispatch => {
-  return apolloClient.query({
-      query: SLIDER_PHOTOS,
-      fetchPolicy: 'no-cache'
+  return axios({
+    method: 'GET',
+    url: 'http://siyakart.in/api/banner-list',
+  })
+    .then(result => {
+      if (result && result.data && result.status) {
+        dispatch(getSliderPhoto(result.data.data));
+      } else {
+        dispatch(sliderLoading(false));
+      }
     })
-    .then((result) => {
-      if(result && result.data && result.data.getBanners) dispatch(getSliderPhoto(result.data.getBanners));
+    .catch(err => {
       dispatch(sliderLoading(false));
-    })
-    .catch((err) => {
-      dispatch(sliderLoading(false));
-    })
-}
+    });
+};

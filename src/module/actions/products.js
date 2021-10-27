@@ -1,6 +1,4 @@
-import { AsyncStorage } from 'react-native';
-import apolloClient from '../graphql/client';
-import { PRODUCT_LIST } from '../graphql/queries';
+import axios from 'axios';
 
 export const productLoading = bool => ({
   type: 'PRODUCT_LOADING',
@@ -12,32 +10,32 @@ export const productError = error => ({
   error,
 });
 
-export const getProduct = (data) => ({
+export const getProduct = data => ({
   type: 'GET_PRODUCTS',
-  data
+  data,
 });
 
 export const clearProducts = () => {
-	return {
-		type: 'CLEAR_PRODUCTS'
-	};
+  return {
+    type: 'CLEAR_PRODUCTS',
+  };
 };
 
-export const getProducts = (data) => dispatch => {
-  dispatch(productLoading(true));
-  return apolloClient.query({
-      query: PRODUCT_LIST,
-      variables: {
-        ...data
-      },
-      fetchPolicy: 'no-cache'
+export const getProducts = () => dispatch => {
+  return axios({
+    method: 'GET',
+    url: 'http://siyakart.in/api/top-product',
+  })
+    .then(result => {
+      if (result && result.data && result.data.status) {
+        dispatch(getProduct(result.data.data));
+      } else {
+        dispatch(productLoading(false));
+      }
     })
-    .then((result) => {
-      if(result && result.data && result.data.getProducts) dispatch(getProduct(result.data.getProducts));
-      dispatch(productLoading(false));
-    })
-    .catch((err) => {
+    .catch(err => {
+      console.log(err);
       dispatch(productLoading(false));
       dispatch(productError(err.message || 'ERROR'));
-    })
-}
+    });
+};

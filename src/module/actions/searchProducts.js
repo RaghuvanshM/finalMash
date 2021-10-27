@@ -1,5 +1,5 @@
 import apolloClient from '../graphql/client';
-import { PRODUCT_LIST } from '../graphql/queries';
+import {PRODUCT_LIST} from '../graphql/queries';
 
 export const productLoading = bool => ({
   type: 'SEARCH_PRODUCT_LOADING',
@@ -11,32 +11,34 @@ export const productError = error => ({
   error,
 });
 
-export const getProduct = (data) => ({
+export const getProduct = data => ({
   type: 'GET_SEARCH_PRODUCTS',
-  data
+  data,
 });
 
 export const clearProducts = () => {
-	return {
-		type: 'SEARCH_CLEAR_PRODUCTS'
-	};
+  return {
+    type: 'SEARCH_CLEAR_PRODUCTS',
+  };
 };
 
-export const getProducts = (args) => dispatch => {
+export const getProducts = args => dispatch => {
   dispatch(productLoading(true));
-  return apolloClient.query({
+  return apolloClient
+    .query({
       query: PRODUCT_LIST,
       variables: {
-        ...args
+        ...args,
       },
-      fetchPolicy: 'no-cache'
+      fetchPolicy: 'no-cache',
     })
-    .then((result) => {
-      if(result && result.data && result.data.getProducts) dispatch(getProduct(result.data.getProducts));
+    .then(result => {
+      if (result && result.data && result.data.getProducts)
+        dispatch(getProduct(result.data.getProducts));
       dispatch(productLoading(false));
     })
-    .catch((err) => {
+    .catch(err => {
       dispatch(productLoading(false));
       dispatch(productError(err.message || 'ERROR'));
-    })
-}
+    });
+};

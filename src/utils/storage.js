@@ -1,6 +1,6 @@
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-community/async-storage';
 export const setData = async (key, value) => {
-  console.log(key,value)
+  console.log(key, value);
   try {
     await AsyncStorage.setItem(key, value);
     return true;
@@ -9,7 +9,7 @@ export const setData = async (key, value) => {
   }
 };
 
-export const deleteData = async (key) => {
+export const deleteData = async key => {
   try {
     await AsyncStorage.removeItem(key);
     return true;
@@ -18,7 +18,7 @@ export const deleteData = async (key) => {
   }
 };
 
-export const getData = async (key) => {
+export const getData = async key => {
   try {
     const value = await AsyncStorage.getItem(key);
     return value;
