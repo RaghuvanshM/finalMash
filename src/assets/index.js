@@ -8,4 +8,6 @@ export const images = {
   placeholder: require('./images/placeholder.png'),
   shoppingBag: require('./images/shopping-bag.png'),
   dummy: require('./images/dummy.png'),
+  chekc: require('./images/checkBox.png'),
+  uncheck: require('./images/checkBoxUnchecked.png'),
 };

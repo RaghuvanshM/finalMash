@@ -10,7 +10,11 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.airbnb.android.react.maps.MapsPackage;  
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.wenkesj.voice.VoicePackage;
+import com.airbnb.android.react.lottie.LottiePackage;
+import com.reactnativecommunity.geolocation.GeolocationPackage;
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -27,6 +31,10 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           new VectorIconsPackage();
+           new MapsPackage();
+            new GeolocationPackage();
+            new VoicePackage();
+            new LottiePackage();
           return packages;
         }
 

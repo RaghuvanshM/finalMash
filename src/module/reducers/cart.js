@@ -1,14 +1,18 @@
 const intialState = {
-  cart: {products: [], deliveryCharge: 0},
   loading: false,
   error: null,
   total: 0,
+  cartProducts: [],
 };
 
 export default function cartReducer(state = intialState, action) {
+  console.log(action);
   switch (action.type) {
     case 'GET_CART':
-      return {...state, cart: action.data, total: action.data.products.length};
+      return {
+        ...state,
+        cartProducts: action.data,
+      };
     case 'CART_LOADING':
       return {...state, loading: action.isLoading};
     case 'UPDATE_CART':

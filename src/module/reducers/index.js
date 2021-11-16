@@ -6,7 +6,7 @@ import sliderReducer from './slider';
 import searchProductReducer from './searchProducts';
 import cartReducer from './cart';
 import orderReducer from './order';
-
+import productdetailsReducer from './productDetail';
 export default combineReducers({
   login: loginReducer,
   category: categoryReducer,
@@ -15,4 +15,5 @@ export default combineReducers({
   searchProducts: searchProductReducer,
   cart: cartReducer,
   order: orderReducer,
+  productdetail: productdetailsReducer,
 });

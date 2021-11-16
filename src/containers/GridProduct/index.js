@@ -9,6 +9,13 @@ import {
 } from 'react-native';
 import {colors} from '../../constants/colors';
 import AddIcon from 'react-native-vector-icons/Feather';
+import axios from 'axios';
+import {compose} from 'redux';
+import {cos} from 'react-native-reanimated';
+import {connect} from 'react-redux';
+import {getData} from '../../utils/storage';
+import data from '../../constants/data';
+import {getCart} from '../../module/actions/cart';
 const {height, width} = Dimensions.get('window');
 class GridProduct extends Component {
   constructor(props) {
@@ -18,14 +25,62 @@ class GridProduct extends Component {
       cartItem: 0,
     };
   }
-  subItem = () => {
+  subItem = async item => {
+    const url = 'http://siyakart.in/api/remove-cart';
     let {cartItem} = this.state;
+    console.log(item.item);
+    let user_id = await getData('loginuserId');
     this.setState({cartItem: cartItem - 1});
+    axios({
+      method: 'POST',
+      url: url,
+      data: {
+        user_id: parseInt(user_id),
+        cart_id: parseInt(item.item.id),
+      },
+    }).then(res => {
+      console.log(res.data);
+      this.props.getCartData(parseInt(user_id));
+    });
   };
-  addItem = () => {
+  addItem = async item => {
+    const url = 'http://siyakart.in/api/add-to-cart';
     let {cartItem} = this.state;
+    console.log(item.item);
+    let user_id = await getData('loginuserId');
     this.setState({cartItem: cartItem + 1});
+    axios({
+      method: 'POST',
+      url: url,
+      data: {
+        user_id: parseInt(user_id),
+        qty: 1,
+        product_id: parseInt(item.item.id),
+      },
+    }).then(res => {
+      console.log(res.data);
+      this.props.getCartData(parseInt(user_id));
+    });
   };
+  singleProductPress = async item => {
+    console.log(item);
+    try {
+      let productDetail = await axios.get(
+        `http://siyakart.in/api/product-detials/${item?.item?.id}`,
+      );
+      console.log(productDetail);
+      if (productDetail?.data?.data) {
+        this.props.dispatchProductDetails(productDetail?.data?.data);
+        console.log(productDetail?.data?.data);
+        this.props.navigation.navigate('productdetail', {
+          data: productDetail?.data?.data,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   render() {
     let {item} = this.props;
     let {cartItem} = this.state;
@@ -33,7 +88,7 @@ class GridProduct extends Component {
       <TouchableOpacity
         style={styles.container}
         onPress={() => {
-          this.props.navigation.navigate('productdetail');
+          this.singleProductPress(item);
         }}>
         <View style={styles.productWapperWrraper}>
           <View style={styles.imgWrapper}>
@@ -80,13 +135,6 @@ class GridProduct extends Component {
                     justifyContent: 'center',
                     flexDirection: 'row',
                   }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      this.subItem();
-                    }}
-                    style={styles.addToCartInneerView1}>
-                    <AddIcon size={20} name={'minus'} color={'white'} />
-                  </TouchableOpacity>
                   <View
                     style={{
                       flex: 1,
@@ -100,7 +148,7 @@ class GridProduct extends Component {
             </View>
             <TouchableOpacity
               onPress={() => {
-                this.addItem();
+                this.addItem(item);
               }}
               style={styles.addToCartInneerView1}>
               <AddIcon size={20} name={'plus'} color={'white'} />
@@ -111,7 +159,18 @@ class GridProduct extends Component {
     );
   }
 }
-export default GridProduct;
+
+const mapStateToProps = state => {
+  return {};
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchProductDetails: data =>
+      dispatch({type: 'GET_PRODUCT_DETAILS', data: data}),
+    getCartData: userId => dispatch(getCart(userId)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(GridProduct);
 const styles = StyleSheet.create({
   container: {
     width: width / 3 - 10,

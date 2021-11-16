@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {compose} from 'redux';
 
 export const productLoading = bool => ({
   type: 'PRODUCT_LOADING',
@@ -27,6 +28,7 @@ export const getProducts = () => dispatch => {
     url: 'http://siyakart.in/api/top-product',
   })
     .then(result => {
+      console.log(result);
       if (result && result.data && result.data.status) {
         dispatch(getProduct(result.data.data));
       } else {

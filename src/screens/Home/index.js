@@ -10,6 +10,7 @@ import {
   Image,
   ScrollView,
   RefreshControl,
+  Linking,
 } from 'react-native';
 import TopNavBar from '../../containers/TopNavBar/index';
 import SlideShow from '../../containers/SlideShow';
@@ -25,6 +26,9 @@ import {getProducts} from '../../module/actions/products';
 import axios from 'axios';
 import GridProduct from '../../containers/GridProduct';
 import CartStrip from '../../Components/CartStrip';
+import {getData} from '../../utils/storage';
+import {getCart} from '../../module/actions/cart';
+import Entypo from 'react-native-vector-icons/Entypo';
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -44,6 +48,7 @@ class Home extends React.Component {
     await this.getSliderImage();
     await this.props.getCategories();
     await this.props.getProducts();
+    await this.props.getCartdata(parseInt(await getData('loginuserId')));
   }
 
   handleScroll = event => {
@@ -186,36 +191,13 @@ class Home extends React.Component {
           }
           showsVerticalScrollIndicator={false}
           style={styles.scrollViewStyle}>
-          {this.renderSlider()}
           {this.renderCategory()}
+          {this.renderSlider()}
           <View style={styles.titleWrapper}>
             <Image source={images.titleImageLeft} />
             <Text style={styles.titleText}>Products</Text>
             <Image source={images.titleImageRight} />
           </View>
-          {/* <Products {...this.props} />
-          <Products {...this.props} />
-          <Products {...this.props} /> */}
-          {/* {true
-            ? this.props.products.map((item, index) => {
-                return (
-                  <View key={String(index)}>
-                    <GridProduct
-                      item={item}
-                      onPress={() => {
-                        this.onPressProductItem(item);
-                      }}
-                    />
-                  </View>
-                );
-              })
-            : !this.state.refreshing && (
-                <View style={styles.emptyBag}>
-                  <Image source={images.shoppingBag} styles={styles.bagImg} />
-                  <Text style={styles.emptyMsgText}>Oops!</Text>
-                  <Text style={styles.emptyMsgSubText}>No products found</Text>
-                </View>
-              )} */}
           <View style={styles.flatlistStyle}>
             <FlatList
               data={this.props.products}
@@ -237,12 +219,20 @@ class Home extends React.Component {
             />
           </View>
         </ScrollView>
-        <CartStrip />
+        <CartStrip {...this.props} />
+        <TouchableOpacity
+          style={styles.stikyButtonContainer}
+          onPress={() => {
+            Linking.openURL('tel:+919478947839');
+          }}>
+          <Entypo name={'help-with-circle'} size={30} color={'white'} />
+        </TouchableOpacity>
       </View>
     );
   }
 }
 const mapStateToProps = state => {
+  console.log(state);
   return {
     sliderPhotos: state.slider.photos,
     categories: state.category.categories,
@@ -254,6 +244,7 @@ const mapDispatchToProps = dispatch => ({
   getCategories: () => dispatch(getCategories()),
   getSliderPhotos: () => dispatch(getSliderPhotos()),
   getProducts: () => dispatch(getProducts()),
+  getCartdata: userId => dispatch(getCart(userId)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
@@ -261,6 +252,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  stikyButtonContainer: {
+    height: 60,
+    width: 60,
+    backgroundColor: '#128c7e',
+    position: 'absolute',
+    bottom: 70,
+    right: 10,
+    borderRadius: 55,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.0,
+
+    elevation: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   scrollViewStyle: {
     flexGrow: 1,

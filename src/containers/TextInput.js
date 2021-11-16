@@ -1,5 +1,12 @@
 import React from 'react';
-import {TouchableOpacity, TextInput, View, StyleSheet} from 'react-native';
+import {
+  TouchableOpacity,
+  TextInput,
+  Text,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {colors} from '../constants/colors';
@@ -45,24 +52,40 @@ export default class RCTextInput extends React.PureComponent {
       value,
       inputRef,
       iconStyle,
+      isZip,
+      ZipCode,
+      onPress,
       ...inputProps
     } = this.props;
     const {showPassword} = this.state;
     return (
       <View style={styles.inputContainer}>
         <View style={styles.wrap}>
-          <TextInput
-            ref={inputRef}
-            style={[styles.input, iconRight && styles.inputIconRight]}
-            autoCorrect={false}
-            autoCapitalize="none"
-            underlineColorAndroid="transparent"
-            placeholder={placeholder}
-            placeholderTextColor={colors.darkGray}
-            secureTextEntry={secureTextEntry && !showPassword}
-            value={value}
-            {...inputProps}
-          />
+          {isZip ? (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => {
+                onPress();
+              }}
+              style={styles.ZipView}>
+              <Text style={styles.textStyle}>
+                {ZipCode !== '' ? ZipCode : placeholder}
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TextInput
+              ref={inputRef}
+              style={[styles.input, iconRight && styles.inputIconRight]}
+              autoCorrect={false}
+              autoCapitalize="none"
+              underlineColorAndroid="transparent"
+              placeholder={placeholder}
+              placeholderTextColor={colors.darkGray}
+              secureTextEntry={secureTextEntry && !showPassword}
+              value={value}
+              {...inputProps}
+            />
+          )}
           {this.renderIconRight(iconRight)}
           {secureTextEntry ? this.iconPassword() : null}
         </View>
@@ -81,6 +104,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#dddddd',
     paddingHorizontal: 10,
   },
+  textStyle: {
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    color: colors.darkBlack,
+  },
   inputContainer: {
     marginBottom: 10,
     marginHorizontal: 20,
@@ -93,5 +121,12 @@ const styles = StyleSheet.create({
     top: 14,
     right: 15,
     color: '#2a2a2a',
+  },
+  ZipView: {
+    height: 48,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dddddd',
+    paddingHorizontal: 10,
+    justifyContent: 'center',
   },
 });

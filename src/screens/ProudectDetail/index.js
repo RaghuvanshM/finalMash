@@ -91,8 +91,11 @@ export default class Details extends Component {
         require('../../assets/images/tea5.jpg'), // Local image
       ],
     };
+    console.log(this.props);
   }
   render() {
+    let {data} = this.props.route.params;
+    console.log(data);
     return (
       <>
         <View style={{flex: 2}}>
@@ -141,7 +144,7 @@ export default class Details extends Component {
                 size={26}
               />
               <SliderBox
-                images={this.state.images}
+                images={data.images}
                 dotColor="#c25d1f"
                 autoplay={true}
                 sliderBoxHeight={250}
@@ -171,8 +174,7 @@ export default class Details extends Component {
                     paddingHorizontal: 3,
                     paddingVertical: 5,
                   }}>
-                  {' '}
-                  17% OFF
+                  {`${data.discount}% OFF`}
                 </Text>
               </View>
               <Text
@@ -181,8 +183,9 @@ export default class Details extends Component {
                   marginLeft: 15,
                   marginTop: 8,
                   fontSize: 17,
+                  textTransform: 'capitalize',
                 }}>
-                Tata Premium Tea (Pouch)
+                {data.name}
               </Text>
 
               <View
@@ -211,7 +214,7 @@ export default class Details extends Component {
                     left: 40,
                     textDecorationLine: 'line-through',
                   }}>
-                  ₹490.00
+                  {`₹ ${data.price}`}
                 </Text>
               </View>
               <View
@@ -238,7 +241,7 @@ export default class Details extends Component {
                     fontSize: 17,
                     fontWeight: 'bold',
                   }}>
-                  ₹402.00
+                  {`₹${data.discount_price}`}
                 </Text>
               </View>
 
@@ -336,7 +339,7 @@ export default class Details extends Component {
                       fontSize: 16,
                       fontWeight: 'bold',
                     }}>
-                    ₹390.00
+                    {`₹${data.discount_price}`}
                   </Text>
                   <Text
                     style={{
@@ -345,7 +348,7 @@ export default class Details extends Component {
                       textDecorationLine: 'line-through',
                       marginLeft: 5,
                     }}>
-                    ₹402.00
+                    {`₹${data.price}`}
                   </Text>
                   <Fontisto
                     style={{position: 'absolute', right: 15, top: 10}}
@@ -371,7 +374,7 @@ export default class Details extends Component {
                     borderWidth: 1,
                     borderColor: 'rgb(233, 97, 37)',
                     height: 'auto',
-                    width: 50,
+                    width: 60,
                     marginTop: 10,
                   }}>
                   <Text
@@ -380,7 +383,7 @@ export default class Details extends Component {
                       color: 'rgb(233, 97, 37)',
                       fontSize: 14,
                     }}>
-                    1 kg
+                    {data.qty} {data.unit}
                   </Text>
                 </View>
               </View>
@@ -392,7 +395,7 @@ export default class Details extends Component {
 
                 height: 300,
               }}>
-              <MyTabs />
+              <MyTabs data={data} />
             </View>
 
             <View
@@ -644,7 +647,7 @@ export default class Details extends Component {
             />
           </ScrollView>
         </View>
-        <CartStrip />
+        <CartStrip {...this.props} />
       </>
     );
   }

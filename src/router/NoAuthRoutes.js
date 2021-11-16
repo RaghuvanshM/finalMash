@@ -18,6 +18,11 @@ import SearchProducts from '../screens/SearchProducts';
 import Search from '../screens/Search/Search';
 import ProductDetail from '../screens/ProudectDetail';
 import MyTabs from './MaterialTop';
+import MyAddress from '../screens/Address/Myaddress';
+import AddAddress from '../screens/Address/AddAddress';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import CategoryScreen from '../screens/Category';
+import ProductOnCategory from '../screens/CategoryWiseProduct';
 const Stack = createStackNavigator();
 const StackNavigationScreens = () => {
   return (
@@ -28,7 +33,10 @@ const StackNavigationScreens = () => {
       <Stack.Screen name="SearchProduct" component={SearchProducts} />
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="TopTab" component={MyTabs} />
-
+      <Stack.Screen name="mycart" component={MyCart} />
+      <Stack.Screen name="categorywiseproduct" component={ProductOnCategory} />
+      <Stack.Screen name="myaddress" component={MyAddress} />
+      <Stack.Screen name="addaddress" component={AddAddress} />
       <Stack.Screen name="productdetail" component={ProductDetail} />
     </Stack.Navigator>
   );
@@ -60,6 +68,38 @@ const TabNavigation = () => {
         }}
       />
       <Tab.Screen
+        name="Category"
+        component={CategoryScreen}
+        options={{
+          tabBarLabel: 'Category',
+          tabBarIcon: ({focused, tintColor}) => (
+            <View>
+              <Fontisto
+                name={'nav-icon-grid'}
+                size={22}
+                color={focused ? colors.lime : colors.gray}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="profile"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Account',
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesome
+                name={'user'}
+                size={22}
+                color={focused ? colors.lime : colors.gray}
+              />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
         name="MyOrders"
         component={Order}
         options={{
@@ -67,7 +107,7 @@ const TabNavigation = () => {
           tabBarIcon: ({focused, tintColor}) => (
             <View>
               <FontAwesome
-                name={'history'}
+                name={'shopping-bag'}
                 size={22}
                 color={focused ? colors.lime : colors.gray}
               />
@@ -85,23 +125,6 @@ const TabNavigation = () => {
             <View>
               <FontAwesome
                 name={'shopping-cart'}
-                size={22}
-                color={focused ? colors.lime : colors.gray}
-              />
-            </View>
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="profile"
-        component={Profile}
-        options={{
-          tabBarLabel: 'Account',
-          tabBarIcon: ({focused}) => (
-            <View>
-              <FontAwesome
-                name={'user'}
                 size={22}
                 color={focused ? colors.lime : colors.gray}
               />

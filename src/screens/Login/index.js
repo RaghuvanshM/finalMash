@@ -14,6 +14,7 @@ import Toast from '../../containers/Toast';
 import WrongInputWarning from '../../containers/WrongInputWarning';
 import {validateEmail} from '../../utils/validators';
 import {setData, getData, deleteData} from '../../utils/storage';
+import axios from 'axios';
 
 class Login extends React.Component {
   constructor(props) {
@@ -29,14 +30,50 @@ class Login extends React.Component {
 
   valid = () => {
     const {email, password} = this.state;
-    if (!validateEmail(email)) return false;
-    if (password.trim() === '') return false;
+    if (!validateEmail(email)) {
+      this.setState({errorText: 'Please Enter Valid Email'});
+      return false;
+    }
+    if (password.trim() === '') {
+      this.setState({errorText: 'Enter Password First!!'});
+      return false;
+    }
     return true;
   };
 
   submit = () => {
-    this.props.setUser(false);
-    setData('tempUserId', 'true');
+    const url = 'http://siyakart.in/api/login';
+    let {email, password} = this.state;
+    if (this.valid()) {
+      this.setState({loading: true, errorText: null});
+      let data = {
+        email: email,
+        password: password,
+      };
+      try {
+        axios({
+          method: 'POST',
+          url: url,
+          data: data,
+        }).then(res => {
+          if (res.data) {
+            if (res?.data?.status) {
+              this.props.setUser(false);
+              setData('loginuserId', res?.data?.data?.id);
+            } else {
+              this.setState({errorText: 'Somthing went wrong !!!'});
+              console.log(res.data);
+            }
+          }
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+    }
+    console.log(this.state);
+
+    // setData('tempUserId', 'true');
   };
   render() {
     const {email, password, isLoading, errorText} = this.state;
@@ -58,10 +95,10 @@ class Login extends React.Component {
               this.emailInput = e;
             }}
             placeholder={'Email'}
-            //  value={email}
+            value={email}
             returnKeyType="next"
             iconRight="email"
-            //  onChangeText={email => this.setState({ email })}
+            onChangeText={email => this.setState({email})}
             // onSubmitEditing={() => { this.passwordInput.focus(); }}
           />
           <RCTextInput
@@ -70,9 +107,9 @@ class Login extends React.Component {
             }}
             secureTextEntry={true}
             placeholder={'Password'}
-            //  value={password}
+            value={password}
             returnKeyType="next"
-            //  onChangeText={password => this.setState({ password })}
+            onChangeText={password => this.setState({password})}
             //  onSubmitEditing={() => this.submit()}
           />
           <Button

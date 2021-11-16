@@ -71,66 +71,64 @@ class SignUp extends React.Component {
   };
   submit = async () => {
     let {firstName, lastName, email, phone, password} = this.state;
-    const url = 'http://siyakart.in/api/register';
-    let data = {
-      full_name: 'raghu',
-      phone: '7895769455',
-      email: 'ra@gmail.com',
-      password: '1234567890',
-    };
-    try {
-      fetch(url, {
-        method: 'POST',
-        body: data,
-      })
-        .then(res => res.json())
-        .then(res2 => {
-          console.log(res2);
-        });
-    } catch (eorr) {
-      console.log(eorr);
-    }
-    // if (!this.valid()) {
-    //   return;
-    // } else {
-    //   let data = {
-    //     first_name: firstName,
-    //     last_name: lastName,
-    //     phone: phone,
-    //     email: email,
-    //     password: password,
-    //   };
-    //   console.log(JSON.stringify(data));
-    //   this.setState({saving: true, issave: true});
-    //   try {
-    //     axios({
-    //       method: 'POST',
-    //       url: `${baseUrl}register`,
-    //       data: JSON.stringify(data),
-    //     }).then(res => {
-    //       console.log(res.data);
-    //       if (res.data.status && res.data.status_code === 200) {
-    //         this.setState({
-    //           issave: true,
-    //           saving: false,
-    //           firstName: '',
-    //           lastName: '',
-    //           email: '',
-    //           phone: '',
-    //           password: '',
+    console.log(this.state);
+    // const url = 'http://siyakart.in/api/register';
+    // let data = {
+    //   full_name: 'raghu',
+    //   phone: '7355163605',
+    //   email: 'rm@gmail.com',
+    //   password: '123456789',
+    // };
 
-    //           errorText: 'Register Successfully! Go Back and Login Now',
-    //         });
-    //       } else {
-    //         this.setState({
-    //           issave: false,
-    //           saving: false,
-    //           errorText: 'Something Went Wrong !!',
-    //         });
-    //       }
-    //     });
-    //   } catch (error) {}
+    // try {
+    //   let res = await axios({
+    //     method: 'POST',
+    //     url: url,
+    //     data: data,
+    //   });
+    //   console.log(res);
+    // } catch (eorr) {
+    //   console.log(eorr);
     // }
+    if (!this.valid()) {
+      return;
+    } else {
+      let data = {
+        full_name: firstName + lastName,
+        phone: phone,
+        email: email,
+        password: password,
+      };
+      this.setState({saving: true, issave: true});
+      try {
+        axios({
+          method: 'POST',
+          url: `${baseUrl}register`,
+          data: data,
+        }).then(res => {
+          console.log(res.data);
+          if (res.data.status && res.data.status_code === 200) {
+            this.setState({
+              issave: true,
+              saving: false,
+              firstName: '',
+              lastName: '',
+              email: '',
+              phone: '',
+              password: '',
+
+              errorText: 'Register Successfully! Go Back and Login Now',
+            });
+          } else {
+            this.setState({
+              issave: false,
+              saving: false,
+              errorText: 'Something Went Wrong !!',
+            });
+          }
+        });
+      } catch (error) {}
+    }
   };
   render() {
     const {

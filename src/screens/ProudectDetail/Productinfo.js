@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {Text, ScrollView, StyleSheet} from 'react-native';
+import {connect} from 'react-redux';
 
 class ProductsInfo extends Component {
   constructor(props) {
@@ -7,11 +8,36 @@ class ProductsInfo extends Component {
   }
   render() {
     return (
-      <View>
-        <Text>This ProductsInfo</Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <Text style={styles.descriptionText}>{this.props.productInfo}</Text>
+        <Text style={styles.descriptionText}>{this.props.productInfo}</Text>
+        <Text style={styles.descriptionText}>{this.props.productInfo}</Text>
+        <Text style={styles.descriptionText}>{this.props.productInfo}</Text>
+        <Text style={styles.descriptionText}>{this.props.productInfo}</Text>
+        <Text style={styles.descriptionText}>{this.props.productInfo}</Text>
+      </ScrollView>
     );
   }
 }
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    productInfo: state.productdetail.productsdetails.description,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {};
+};
 
-export default ProductsInfo;
+export default connect(mapStateToProps, mapDispatchToProps)(ProductsInfo);
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+  },
+  descriptionText: {
+    fontSize: 13,
+    fontFamily: 'Poppins-Regular',
+    lineHeight: 18,
+  },
+});
